@@ -1,6 +1,7 @@
 {
   "name": "tigbur",
   "version": "0.1.0",
+  "homepage": "http://tigbur.dev.bxs.co.il/calc",
   "private": true,
   "dependencies": {
     "classnames": "^2.2.6",
