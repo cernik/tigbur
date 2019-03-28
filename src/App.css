@@ -1,33 +1,136 @@
-.App {
+.Page-container {
+}
+
+.Main-container {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  margin-left: auto;
+  padding: 40px;
+  padding-top: 0px;
+  direction: rtl;
+}
+
+.Questions-header-container {
+  clear: both;
+  margin: 0 0 5px 0;
+  padding: 0 1% 1.1em 1%;
+  border-bottom: 1px dotted #ccc;
+}
+
+.Questions-header-container .Description {
+  font-size: 95%;
+  line-height: 135%;
+  color: #555;
+}
+
+.Paragraph-description {
+  font-size: 95%;
+  line-height: 135%;
+  color: #555;
+}
+
+.Questions-header-description {
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.Questions-header-errors {
+  width: 100%;
+  margin: 15px auto 15px auto;
+  background: #fff;
+  border: 1px solid red;
+  text-align: center;
+  padding: 1em 0 1em 0;
+  border-radius: 20px;
+}
+
+.Block-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 5px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+
+.Block-container.Focused {
+  background-color: #fff7c0;
+}
+
+.Block-container.Invalid {
+  background-color: #ffdfdf;
+}
+
+.Block-title,
+.Block-title-no-bold {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.Block-title-no-bold {
+  font-weight: normal;
+}
+
+.Question-text {
+  margin-right: 5px;
+}
+
+.Question-input {
+  width: 50%;
+}
+
+.Required-star {
+  display: inline;
+  float: none;
+  color: red;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+}
+
+.separator {
+  width: 100%;
+  height: 1px;
+  border-bottom: 1px dotted #ccc;
+}
+
+.Success-container {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.Success-label {
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+.Error-container {
+  margin: 15px auto 15px auto;
+  background: #fff;
+  border: 1px solid red;
+  text-align: center;
+  padding: 1em 0 1em 0;
+  border-radius: 20px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.Error-title {
+  margin: 0 0 5px 0;
+  padding: 0;
+  font-size: 125%;
+  color: #df0000;
 }
 
-.App-link {
-  color: #61dafb;
+.Error-description {
+  margin: 0 0 2px 0;
+  color: #000 !important;
+  font-size: 100%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.Error-badge {
+  padding: 2px 8px;
+  margin-left: 5px;
+  margin-right: 5px;
+  background-color: #ffdfdf;
+  color: red;
+  border-radius: 10px;
 }
