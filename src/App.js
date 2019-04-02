@@ -2,287 +2,35 @@ import React, { Component } from "react";
 import cn from "classnames";
 
 import "./App.css";
+import {
+  isValid,
+  questions,
+  questionsSubmit,
+  getAnswers,
+  getAnswersAndResult,
+  getTextResult
+} from "./questions";
 
-const addIds = (questions = []) => {
-  return questions.map((q, i) => ({ id: i + (q.title || q.text || ""), ...q }));
-};
-
-const addMixins = (_questions = []) => {
-  const isValid = function() {
-    const { value, required, dependsOn } = this;
-    if (!!dependsOn && !questions.find(item => item.value === dependsOn)) {
-      return true;
-    }
-    return !required || (required && !!value);
-  };
-  return _questions.map(q => ({ isValid, ...q }));
-};
-
-const isValid = (questions = []) => {
-  return questions.every(q => q.isValid());
-};
-
-const getAnswers = (questions = []) => {
-  return questions
-    .filter(
-      q =>
-        ["input", "radio"].includes(q.type) &&
-        ((!!q.dependsOn &&
-          questions.find(item => item.value === q.dependsOn) &&
-          !!q.value) ||
-          (!q.dependsOn && !!q.value))
-    )
-    .map(q => ({ title: q.title, value: q.value }));
-};
-
-const questions = addMixins(
-  addIds([
-    {
-      title: "גיל",
-      type: "input",
-      value: "",
-      required: true
-    },
-    {
-      title: "מין",
-      type: "radio",
-      questions: addIds([
-        {
-          text: "זכר"
-        },
-        {
-          text: "נקבה"
-        }
-      ]),
-      value: "",
-      required: true
-    },
-    {
-      title: "מגורים",
-      type: "radio",
-      questions: addIds([
-        {
-          text: "גר/ה לבד"
-        },
-        {
-          text: "לא גר/ה לבד"
-        }
-      ]),
-      value: "",
-      required: true
-    },
-    {
-      title: "נפילות בתוך הבית",
-      type: "radio",
-      questions: addIds([
-        {
-          text: "נפילה אחת לחודש, ללא קימה לבד"
-        },
-        {
-          text: "נפילה אחת לשבוע, ללא קימה לבד"
-        },
-        {
-          text: "ללא בעיה"
-        }
-      ]),
-      value: "ללא בעיה",
-      required: true
-    },
-    {
-      title: "הלבשה",
-      type: "radio",
-      questions: addIds([
-        {
-          text: "צריך/ה עזרה קלה"
-        },
-        {
-          text: "צריך/ה עזרה רבה או מלאה בהלבשה"
-        },
-        {
-          text: "אין בעיה"
-        }
-      ]),
-      value: "אין בעיה",
-      required: true
-    },
-    {
-      title: "רחצה",
-      type: "radio",
-      questions: addIds([
-        {
-          text: "צריך/ה עזרה קלה בהכנת תנאי הרחצה/השגחה"
-        },
-        {
-          text: "צריך/ה עזרה פעילה בחלק מפעולות הרחצה"
-        },
-        {
-          text: "צריך/ה עזרה ברחיצת אזורים אינטימיים"
-        },
-        {
-          text: "צריך/ה עזרה מלאה בכל פעולות הרחצה"
-        },
-        {
-          text: "מסרב/ת להתרחץ עקב בעיות תובנה. צריך/ה עזרה מלאה"
-        },
-        {
-          text: "אין בעיה"
-        }
-      ]),
-      value: "אין בעיה",
-      required: true
-    },
-    {
-      title: "ניוד",
-      type: "radio",
-      questions: addIds([
-        {
-          text: "נייד/ת בעזרת מכשיר אבל זקוק לעזרת אדם בהליכה או קימה"
-        },
-        {
-          text: "משתמש/ת בכיסא גלגלים, אך מסתדר/ת לבד בתוך הבית"
-        },
-        {
-          text: "נעזר/ת בכיסא גלגלים וזקוק/ה לעזרה"
-        },
-        {
-          text: "מרותק/ת למיטה, ולא מסוגל/ת ללכת"
-        },
-        {
-          text: "ללא בעיה"
-        }
-      ]),
-      value: "ללא בעיה",
-      required: true
-    },
-    {
-      title: "הפרשות",
-      type: "radio",
-      questions: addIds([
-        {
-          text: "משתמש בשירותים או בסיר/בקבוק, אבל צריך/ה עזרה מועטה"
-        },
-        {
-          text: "שולט/ת באופן חלקי (הרטבת לילה) ולא מטפל/ת בעצמו/ה"
-        },
-        {
-          text: "משתמש בשירותים או בסיר/בקבוק, אבל צריך/ה עזרה"
-        },
-        {
-          text:
-            "ללא שליטה באחד הסוגרים, לא מטפל/ת בעצמו/ה, ותלוי/ה לחלוטין בעזרת הזולת"
-        },
-        {
-          text: "עושה צרכים ללא היגיון, עקב חוסר תובנה"
-        },
-        {
-          text: "אין בעיה"
-        }
-      ]),
-      value: "אין בעיה",
-      required: true
-    },
-    {
-      title: "אכילה ושתייה",
-      type: "radio",
-      questions: addIds([
-        {
-          text: "צריך/ה עזרה באכילה או לקיחת תרופות"
-        },
-        {
-          text: "צריך/ה עזרה חלקית באכילה או לקיחת תרופות"
-        },
-        {
-          text: "מסרב/ת לאכול וזקוק/ה לעזרה"
-        },
-        {
-          text: "זקוק/ה להאכלה מלאה באמצעות זונדה, פאג וכו'"
-        },
-        {
-          text: "אין בעיה"
-        }
-      ]),
-      value: "אין בעיה",
-      required: true
-    },
-    {
-      type: "separator"
-    },
-    {
-      type: "paragraph",
-      title: "מבחן הכנסות",
-      content:
-        'ביטוח לאומי מחשב את הזכאות לגמלת סיעוד גם על בסיס הכנסות. יש לסמן את סכום ההכנסה החודשית במידה ולא מעוניינים למסור את ההכנסה, ניתן לסמן "לא כרגע"'
-    },
-    {
-      title: "יחיד/זוג",
-      type: "radio",
-      questions: addIds([
-        {
-          text: "יחיד"
-        },
-        {
-          text: "זוג"
-        }
-      ]),
-      value: "",
-      required: false
-    },
-    {
-      title: "יחיד",
-      dependsOn: "יחיד",
-      type: "radio",
-      questions: addIds([
-        {
-          text: "עד 9,089 ₪*"
-        },
-        {
-          text: "מעל 9,089 ₪ ועד ל- 13,634 ₪"
-        },
-        {
-          text: "מעל 13,634 ₪"
-        },
-        {
-          text: "לא כרגע"
-        }
-      ]),
-      value: "",
-      required: true
-    },
-    {
-      title: "זוג",
-      dependsOn: "זוג",
-      type: "radio",
-      questions: addIds([
-        {
-          text: "עד 13,634 ₪"
-        },
-        {
-          text: "מעל 13,634 ₪ ועד ל- 20,451 ₪"
-        },
-        {
-          text: "מעל 20,451 ₪"
-        },
-        {
-          text: "לא כרגע"
-        }
-      ]),
-      value: "",
-      required: true
-    }
-  ])
-);
+function getTextValue({ questions, type }, value) {
+  if (type !== "radio") {
+    return value;
+  }
+  return (questions.find(x => x.value == value) || {}).text || value;
+}
 
 class Block extends Component {
   onChange = event => {
     const { question = {}, onChange = function() {} } = this.props;
-    question.value = event.target.value;
+    const { value } = event.target;
+    question.value = value;
+    question.textValue = getTextValue(question, value);
     onChange(question.value);
   };
 
   onClick = () => {
     const { question = {}, onFocus = function() {} } = this.props;
     const { type } = question;
-    if (["input", "radio"].includes(type)) {
+    if (["input", "radio", "textarea"].includes(type)) {
       onFocus(question.id);
     }
   };
@@ -296,6 +44,16 @@ class Block extends Component {
         return (
           <input
             className={"Question-input"}
+            type={question.fieldType || "text"}
+            value={value}
+            onChange={this.onChange}
+          />
+        );
+      }
+      case "textarea": {
+        return (
+          <textarea
+            className={"Question-input"}
             type="text"
             value={value}
             onChange={this.onChange}
@@ -308,8 +66,8 @@ class Block extends Component {
             <input
               type="radio"
               name={title}
-              value={q.text}
-              checked={q.text === value}
+              value={q.value}
+              checked={q.value == value}
               onChange={this.onChange}
             />
             <label className="Question-text">{q.text}</label>
@@ -322,7 +80,22 @@ class Block extends Component {
       case "paragraph": {
         return <div className="Paragraph-description">{question.content}</div>;
       }
-
+      case "dropdown": {
+        return (
+          <select
+            id="selectInput"
+            className={"Question-input"}
+            onChange={this.onChange}
+            defaultValue={questions[0].text}
+          >
+            {questions.map(q => (
+              <option key={q.id} value={q.text}>
+                {q.text}
+              </option>
+            ))}
+          </select>
+        );
+      }
       default: {
         return null;
       }
@@ -396,8 +169,9 @@ class Questions extends Component {
 
     !valid && window.scrollTo(0, 0);
     if (valid) {
-      console.log("Results: ", getAnswers(questions));
-      this.props.onSubmit && this.props.onSubmit();
+      const results = getAnswersAndResult(questions);
+      console.log("Results: ", results);
+      this.props.onSubmit && this.props.onSubmit(results);
     }
     return false;
   };
@@ -426,7 +200,58 @@ class Questions extends Component {
             key={q.id}
             question={q}
             onChange={this.onChange}
-            focused={focusId == q.id}
+            focused={focusId === q.id}
+            onFocus={this.onFocus}
+            invalid={showErrors && !q.isValid()}
+          />
+        ))}
+        <input type="submit" value={"שלח"} />
+      </form>
+    );
+  }
+}
+
+class QuestionsSubmit extends Component {
+  state = { focusId: undefined, showErrors: false };
+
+  onChange = () => {
+    this.forceUpdate();
+  };
+
+  onFocus = focusId => {
+    this.setState({ focusId });
+  };
+
+  onSubmit = event => {
+    event.preventDefault();
+    const valid = isValid(questionsSubmit);
+    this.setState({ showErrors: !valid });
+
+    !valid && window.scrollTo(0, 0);
+    if (valid) {
+      const results = getAnswers(questionsSubmit);
+      console.log("Results: ", results);
+      this.props.onSubmit && this.props.onSubmit(results);
+    }
+    return false;
+  };
+
+  render() {
+    const answers = getAnswersAndResult(questions);
+    const textResult = getTextResult(answers.result);
+    const { focusId, showErrors } = this.state;
+    return (
+      <form onSubmit={this.onSubmit}>
+        <div className="Questions-header-container">
+          <h2>תוצאות ותופס שמירה</h2>
+          <label>{textResult}</label>
+        </div>
+        {questionsSubmit.map(q => (
+          <Block
+            key={q.id}
+            question={q}
+            onChange={this.onChange}
+            focused={focusId === q.id}
             onFocus={this.onFocus}
             invalid={showErrors && !q.isValid()}
           />
@@ -449,21 +274,95 @@ class SuccessPage extends Component {
   }
 }
 
-class App extends Component {
-  state = { qMode: true };
+const STAGES = {
+  QUESTIONS: "QUESTIONS",
+  SUBMIT: "SUBMIT",
+  SUCCESS: "SUCCESS"
+};
 
-  render() {
-    const { qMode } = this.state;
-    return (
-      <div className="Page-container">
-        {qMode && (
+function preparePayloadMessage(
+  data = {
+    ageAnswer: 0,
+    answers: [],
+    incomeAnswer: 1,
+    quizResult: false,
+    result: 0,
+    profileAnswers: []
+  }
+) {
+  const profileAnswersStr = data.profileAnswers.reduce(
+    (acc, answer) => acc.concat(`${answer.title}: ${answer.textValue}\n`),
+    "User:\n"
+  );
+
+  const quizAnswersStr = data.answers.reduce(
+    (acc, answer) => acc.concat(`${answer.title}: ${answer.textValue}\n`),
+    "Answers:\n"
+  );
+
+  return `${profileAnswersStr}\n\n${quizAnswersStr}\n\nResult: ${data.result}`;
+}
+
+class App extends Component {
+  state = {
+    mode: STAGES.QUESTIONS,
+    results: null
+  };
+
+  handleSubmit = e => {
+    if (e.mode === STAGES.SUCCESS && this.state.results) {
+      const { mode, data: profileAnswers } = e;
+
+      const message = preparePayloadMessage({
+        ...this.state.results,
+        profileAnswers
+      });
+      this.setState({ mode });
+      if (message) {
+        const submittedResults = JSON.stringify({
+          type: "react_message",
+          data: message
+        });
+        window.parent.postMessage(submittedResults, "*");
+      }
+    } else {
+      const { mode, data: results } = e;
+      console.log("results", results);
+      this.setState({ mode, results });
+    }
+  };
+
+  renderContent() {
+    const { mode } = this.state;
+    switch (mode) {
+      case STAGES.SUBMIT: {
+        return (
           <div className="Main-container">
-            <Questions onSubmit={() => this.setState({ qMode: false })} />
+            <QuestionsSubmit
+              onSubmit={e =>
+                this.handleSubmit({ data: e, mode: STAGES.SUCCESS })
+              }
+            />
           </div>
-        )}
-        {!qMode && <SuccessPage />}
-      </div>
-    );
+        );
+      }
+      case STAGES.SUCCESS: {
+        return <SuccessPage />;
+      }
+      default:
+        return (
+          <div className="Main-container">
+            <Questions
+              onSubmit={e =>
+                this.handleSubmit({ data: e, mode: STAGES.SUBMIT })
+              }
+            />
+          </div>
+        );
+    }
+  }
+  render() {
+    return <div className="Page-container">{this.renderContent()}</div>;
   }
 }
 
