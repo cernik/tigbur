@@ -243,7 +243,6 @@ class QuestionsSubmit extends Component {
     return (
       <form onSubmit={this.onSubmit}>
         <div className="Questions-header-container">
-          <h2>תוצאות ותופס שמירה</h2>
           <label>{textResult}</label>
         </div>
         {questionsSubmit.map(q => (
