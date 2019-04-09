@@ -79,11 +79,11 @@ export const questions = addMixins(
         },
         {
           value: 1,
-          text: "ללא בעיה"
+          text: "אין בעיה"
         }
       ]),
       value: 1,
-      textValue: "ללא בעיה",
+      textValue: "אין בעיה",
       required: true
     },
     {
@@ -165,10 +165,11 @@ export const questions = addMixins(
         },
         {
           value: 1,
-          text: "ללא בעיה"
+          text: "אין בעיה"
         }
       ]),
       value: 1,
+      textValue: "אין בעיה",
       required: true
     },
     {
@@ -383,8 +384,8 @@ export const questionsSubmit = addMixins(
           text: "עפולה והעמקים"
         }
       ]),
-      value: "איזור המרכז – גוש דן",
-      textValue: "איזור המרכז – גוש דן",
+      value: "",
+      textValue: "",
       required: false
     },
     {
@@ -407,13 +408,13 @@ export const questionsSubmit = addMixins(
 );
 
 const getResult = sex => age => noProblem => incomeType => {
-  if ((sex == 1 && age >= 67) || (sex == 2 && age >= 62)) {
+  if ((+sex === 1 && age >= 67) || (+sex === 2 && age >= 62)) {
     return 3;
   }
-  if (noProblem && incomeType == 3) {
+  if (noProblem && +incomeType === 3) {
     return 3;
   }
-  if (incomeType == 2) {
+  if (+incomeType === 2) {
     return 2;
   }
   return 1;

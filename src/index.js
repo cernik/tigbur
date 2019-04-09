@@ -3,4 +3,6 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 
-ReactDOM.render(<App />, document.getElementById("calc-root"));
+const target = document.querySelector("#calc-root");
+
+ReactDOM.render(<App />, target);

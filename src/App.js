@@ -43,7 +43,10 @@ class Block extends Component {
       case "input": {
         return (
           <input
-            className={"Question-input"}
+            size="1"
+            className={
+              "Question-input elementor-field elementor-size-sm  elementor-field-textual"
+            }
             type={question.fieldType || "text"}
             value={value}
             onChange={this.onChange}
@@ -53,7 +56,13 @@ class Block extends Component {
       case "textarea": {
         return (
           <textarea
-            className={"Question-input"}
+            size="1"
+            className={cn(
+              "Question-input",
+              "elementor-field",
+              "elementor-size-sm",
+              "elementor-field-textual"
+            )}
             type="text"
             value={value}
             onChange={this.onChange}
@@ -126,7 +135,7 @@ class Block extends Component {
         )}
         onClick={this.onClick}
       >
-        <label className={titleClassName}>
+        <label className={cn(titleClassName, "elementor-field-label")}>
           {required && <span className="Required-star">*</span>}
           {title}
         </label>
@@ -170,7 +179,7 @@ class Questions extends Component {
     !valid && window.scrollTo(0, 0);
     if (valid) {
       const results = getAnswersAndResult(questions);
-      console.log("Results: ", results);
+      // console.log("Results: ", results);
       this.props.onSubmit && this.props.onSubmit(results);
     }
     return false;
@@ -179,13 +188,13 @@ class Questions extends Component {
   render() {
     const { focusId, showErrors } = this.state;
     return (
-      <form onSubmit={this.onSubmit}>
+      <form onSubmit={this.onSubmit} className="elementor-form">
         <div className="Questions-header-container">
-          <h2>מחשבון זכאות</h2>
-          <div className="Description">
+          <h1 className="Questions-header">מחשבון זכאות</h1>
+          <p>
             מחשבון זכאות לטיפול סיעודי בבית <br />
             בדקו מה הסיכוי לזכאות לגמלת סיעוד מטעם הביטוח הלאומי
-          </div>
+          </p>
         </div>
         {showErrors && <ErrorBlock />}
         <section className="Questions-header-description">
@@ -195,17 +204,47 @@ class Questions extends Component {
             קובע את הזכאות
           </label>
         </section>
-        {questions.map(q => (
-          <Block
-            key={q.id}
-            question={q}
-            onChange={this.onChange}
-            focused={focusId === q.id}
-            onFocus={this.onFocus}
-            invalid={showErrors && !q.isValid()}
-          />
-        ))}
-        <input type="submit" value={"שלח"} />
+
+        <section className="elementor-element elementor-section-boxed elementor-section-height-default elementor-section-height-default elementor-section elementor-inner-section jet-parallax-section">
+          <div className="elementor-container elementor-column-gap-default">
+            <div className="elementor-row">
+              <div className="elementor-element elementor-column elementor-col-50 elementor-inner-column">
+                <div className="elementor-column-wrap  elementor-element-populated">
+                  <div className="elementor-widget-wrap">
+                    <div className="elementor-element elementor-button-align-stretch elementor-widget elementor-widget-form is-mac">
+                      <div className="elementor-widget-container">
+                        <div className="elementor-form-fields-wrapper elementor-labels-above">
+                          {questions.map(q => (
+                            <Block
+                              key={q.id}
+                              question={q}
+                              onChange={this.onChange}
+                              focused={focusId === q.id}
+                              onFocus={this.onFocus}
+                              invalid={showErrors && !q.isValid()}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div className="elementor-field-group elementor-column elementor-field-type-submit elementor-col-100">
+          <button
+            type="submit"
+            value={"שלח"}
+            className="elementor-button elementor-size-sm"
+          >
+            <span>
+              <span className="elementor-button-text">שליחה</span>
+            </span>
+          </button>
+        </div>
       </form>
     );
   }
@@ -213,6 +252,9 @@ class Questions extends Component {
 
 class QuestionsSubmit extends Component {
   state = { focusId: undefined, showErrors: false };
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
 
   onChange = () => {
     this.forceUpdate();
@@ -230,7 +272,7 @@ class QuestionsSubmit extends Component {
     !valid && window.scrollTo(0, 0);
     if (valid) {
       const results = getAnswers(questionsSubmit);
-      console.log("Results: ", results);
+      // console.log("Results: ", results);
       this.props.onSubmit && this.props.onSubmit(results);
     }
     return false;
@@ -255,23 +297,34 @@ class QuestionsSubmit extends Component {
             invalid={showErrors && !q.isValid()}
           />
         ))}
-        <input type="submit" value={"שלח"} />
+        <button
+          type="submit"
+          value={"שלח"}
+          className="elementor-button elementor-size-sm"
+        >
+          <span>
+            <span className="elementor-button-text">שליחה</span>
+          </span>
+        </button>
       </form>
     );
   }
 }
 
-class SuccessPage extends Component {
-  render() {
-    return (
-      <div className="Success-container">
-        <h2 className="Success-label">
-          {"Great! Thanks for filling out my form"}
-        </h2>
-      </div>
-    );
-  }
-}
+// class SuccessPage extends Component {
+//   componentDidMount() {
+//     window.scrollTo(0, 0);
+//   }
+//   render() {
+//     return (
+//       <div className="Success-container">
+//         <h1 className="Success-label">
+//           {"Great! Thanks for filling out my form"}
+//         </h1>
+//       </div>
+//     );
+//   }
+// }
 
 const STAGES = {
   QUESTIONS: "QUESTIONS",
@@ -291,18 +344,18 @@ function preparePayloadMessage(
 ) {
   const profileAnswersStr = data.profileAnswers.reduce(
     (acc, answer) => acc.concat(`${answer.title}: ${answer.textValue}\n`),
-    "User:\n"
+    "פרטים אישיים:\n"
   );
 
   const quizAnswersStr = data.answers.reduce(
     (acc, answer) => acc.concat(`${answer.title}: ${answer.textValue}\n`),
-    "Answers:\n"
+    "תשובות:\n"
   );
 
   return `${profileAnswersStr}\n\n${quizAnswersStr}\n\nResult: ${data.result}`;
 }
 
-class App extends Component {
+export default class App extends Component {
   state = {
     mode: STAGES.QUESTIONS,
     results: null
@@ -326,12 +379,12 @@ class App extends Component {
       }
     } else {
       const { mode, data: results } = e;
-      console.log("results", results);
+      // console.log("results", results);
       this.setState({ mode, results });
     }
   };
 
-  renderContent() {
+  render() {
     const { mode } = this.state;
     switch (mode) {
       case STAGES.SUBMIT: {
@@ -345,9 +398,9 @@ class App extends Component {
           </div>
         );
       }
-      case STAGES.SUCCESS: {
-        return <SuccessPage />;
-      }
+      // case STAGES.SUCCESS: {
+      //   return <SuccessPage />;
+      // }
       default:
         return (
           <div className="Main-container">
@@ -360,9 +413,4 @@ class App extends Component {
         );
     }
   }
-  render() {
-    return <div className="Page-container">{this.renderContent()}</div>;
-  }
 }
-
-export default App;
