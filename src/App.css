@@ -48,6 +48,10 @@
   border-radius: 20px;
 }
 
+.Block-row {
+  display: flex;
+}
+
 .Block-container {
   display: flex;
   flex-direction: column;
@@ -90,6 +94,10 @@
   min-height: 40px;
   padding: 5px 14px;
   border-radius: 3px;
+}
+
+.Question-input-age {
+  width: 30%;
 }
 
 .Required-star {
@@ -145,4 +153,11 @@
   background-color: #ffdfdf;
   color: red;
   border-radius: 10px;
+}
+
+.Submit-button {
+  background-color: #252566;
+}
+.Submit-button:hover {
+  background-color: #ff6542;
 }

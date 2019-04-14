@@ -44,9 +44,13 @@ class Block extends Component {
         return (
           <input
             size="1"
-            className={
-              "Question-input elementor-field elementor-size-sm  elementor-field-textual"
-            }
+            className={cn(
+              "Question-input",
+              "elementor-field",
+              "elementor-size-sm",
+              "elementor-field-textual",
+              ...(question.classNames || [])
+            )}
             type={question.fieldType || "text"}
             value={value}
             onChange={this.onChange}
@@ -71,7 +75,7 @@ class Block extends Component {
       }
       case "radio": {
         return questions.map(q => (
-          <div key={q.id}>
+          <div className="Block-row" key={q.id}>
             <input
               type="radio"
               name={title}
@@ -208,7 +212,7 @@ class Questions extends Component {
         <section className="elementor-element elementor-section-boxed elementor-section-height-default elementor-section-height-default elementor-section elementor-inner-section jet-parallax-section">
           <div className="elementor-container elementor-column-gap-default">
             <div className="elementor-row">
-              <div className="elementor-element elementor-column elementor-col-50 elementor-inner-column">
+              <div className="elementor-element elementor-column elementor-col-90 elementor-inner-column">
                 <div className="elementor-column-wrap  elementor-element-populated">
                   <div className="elementor-widget-wrap">
                     <div className="elementor-element elementor-button-align-stretch elementor-widget elementor-widget-form is-mac">
@@ -234,11 +238,23 @@ class Questions extends Component {
           </div>
         </section>
 
-        <div className="elementor-field-group elementor-column elementor-field-type-submit elementor-col-100">
+        <div
+          className={cn(
+            "elementor-field-group",
+            "elementor-column",
+            "elementor-field-type-submit",
+            "elementor-col-100"
+          )}
+        >
           <button
             type="submit"
             value={"שלח"}
-            className="elementor-button elementor-size-sm"
+            className={cn(
+              "elementor-button",
+              "elementor-size-sm",
+              "elementor-column",
+              "Submit-button"
+            )}
           >
             <span>
               <span className="elementor-button-text">שליחה</span>

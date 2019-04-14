@@ -1,3 +1,5 @@
+import options from "./options.json";
+
 const addIds = (questions = []) => {
   return questions.map((q, i) => ({ id: i + (q.title || q.text || ""), ...q }));
 };
@@ -26,22 +28,14 @@ export const questions = addMixins(
       value: "",
       textValue: "",
       fieldType: "number",
-      required: true
+      required: true,
+      classNames: ["Question-input-age"]
     },
     {
       title: "מין",
       type: "radio",
       field: "sex",
-      questions: addIds([
-        {
-          value: 1,
-          text: "זכר"
-        },
-        {
-          value: 2,
-          text: "נקבה"
-        }
-      ]),
+      questions: addIds(options.sex),
       value: "",
       textValue: "",
       required: true
@@ -50,16 +44,7 @@ export const questions = addMixins(
       title: "מגורים",
       type: "radio",
       field: "host",
-      questions: addIds([
-        {
-          value: 1,
-          text: "גר/ה לבד"
-        },
-        {
-          value: 2,
-          text: "לא גר/ה לבד"
-        }
-      ]),
+      questions: addIds(options.host),
       value: "",
       textValue: "",
       required: true
@@ -68,20 +53,7 @@ export const questions = addMixins(
       title: "נפילות בתוך הבית",
       type: "radio",
       field: "quiz",
-      questions: addIds([
-        {
-          value: 2,
-          text: "נפילה אחת לחודש, ללא קימה לבד"
-        },
-        {
-          value: 3,
-          text: "נפילה אחת לשבוע, ללא קימה לבד"
-        },
-        {
-          value: 1,
-          text: "אין בעיה"
-        }
-      ]),
+      questions: addIds(options.quiz1),
       value: 1,
       textValue: "אין בעיה",
       required: true
@@ -90,20 +62,7 @@ export const questions = addMixins(
       title: "הלבשה",
       type: "radio",
       field: "quiz",
-      questions: addIds([
-        {
-          value: 2,
-          text: "צריך/ה עזרה קלה"
-        },
-        {
-          value: 3,
-          text: "צריך/ה עזרה רבה או מלאה בהלבשה"
-        },
-        {
-          value: 1,
-          text: "אין בעיה"
-        }
-      ]),
+      questions: addIds(options.quiz2),
       value: 1,
       textValue: "אין בעיה",
       required: true
@@ -112,32 +71,7 @@ export const questions = addMixins(
       title: "רחצה",
       type: "radio",
       field: "quiz",
-      questions: addIds([
-        {
-          value: 2,
-          text: "צריך/ה עזרה קלה בהכנת תנאי הרחצה/השגחה"
-        },
-        {
-          value: 3,
-          text: "צריך/ה עזרה פעילה בחלק מפעולות הרחצה"
-        },
-        {
-          value: 4,
-          text: "צריך/ה עזרה ברחיצת אזורים אינטימיים"
-        },
-        {
-          value: 5,
-          text: "צריך/ה עזרה מלאה בכל פעולות הרחצה"
-        },
-        {
-          value: 6,
-          text: "מסרב/ת להתרחץ עקב בעיות תובנה. צריך/ה עזרה מלאה"
-        },
-        {
-          value: 1,
-          text: "אין בעיה"
-        }
-      ]),
+      questions: addIds(options.quiz3),
       value: 1,
       textValue: "אין בעיה",
       required: true
@@ -146,28 +80,7 @@ export const questions = addMixins(
       title: "ניוד",
       type: "radio",
       field: "quiz",
-      questions: addIds([
-        {
-          value: 2,
-          text: "נייד/ת בעזרת מכשיר אבל זקוק לעזרת אדם בהליכה או קימה"
-        },
-        {
-          value: 3,
-          text: "משתמש/ת בכיסא גלגלים, אך מסתדר/ת לבד בתוך הבית"
-        },
-        {
-          value: 4,
-          text: "נעזר/ת בכיסא גלגלים וזקוק/ה לעזרה"
-        },
-        {
-          value: 5,
-          text: "מרותק/ת למיטה, ולא מסוגל/ת ללכת"
-        },
-        {
-          value: 1,
-          text: "אין בעיה"
-        }
-      ]),
+      questions: addIds(options.quiz4),
       value: 1,
       textValue: "אין בעיה",
       required: true
@@ -176,33 +89,7 @@ export const questions = addMixins(
       title: "הפרשות",
       type: "radio",
       field: "quiz",
-      questions: addIds([
-        {
-          value: 2,
-          text: "משתמש בשירותים או בסיר/בקבוק, אבל צריך/ה עזרה מועטה"
-        },
-        {
-          value: 3,
-          text: "שולט/ת באופן חלקי (הרטבת לילה) ולא מטפל/ת בעצמו/ה"
-        },
-        {
-          value: 4,
-          text: "משתמש בשירותים או בסיר/בקבוק, אבל צריך/ה עזרה"
-        },
-        {
-          value: 5,
-          text:
-            "ללא שליטה באחד הסוגרים, לא מטפל/ת בעצמו/ה, ותלוי/ה לחלוטין בעזרת הזולת"
-        },
-        {
-          value: 6,
-          text: "עושה צרכים ללא היגיון, עקב חוסר תובנה"
-        },
-        {
-          value: 1,
-          text: "אין בעיה"
-        }
-      ]),
+      questions: addIds(options.quiz5),
       value: 1,
       textValue: "אין בעיה",
       required: true
@@ -211,28 +98,7 @@ export const questions = addMixins(
       title: "אכילה ושתייה",
       type: "radio",
       field: "quiz",
-      questions: addIds([
-        {
-          value: 2,
-          text: "צריך/ה עזרה באכילה או לקיחת תרופות"
-        },
-        {
-          value: 3,
-          text: "צריך/ה עזרה חלקית באכילה או לקיחת תרופות"
-        },
-        {
-          value: 4,
-          text: "מסרב/ת לאכול וזקוק/ה לעזרה"
-        },
-        {
-          value: 5,
-          text: "זקוק/ה להאכלה מלאה באמצעות זונדה, פאג וכו'"
-        },
-        {
-          value: 1,
-          text: "אין בעיה"
-        }
-      ]),
+      questions: addIds(options.quiz6),
       value: 1,
       textValue: "אין בעיה",
       required: true
@@ -250,16 +116,7 @@ export const questions = addMixins(
       title: "יחיד/זוג",
       type: "radio",
       field: "pair",
-      questions: addIds([
-        {
-          value: "יחיד",
-          text: "יחיד"
-        },
-        {
-          value: "זוג",
-          text: "זוג"
-        }
-      ]),
+      questions: addIds(options.pair),
       value: "",
       textValue: "",
       required: true
@@ -269,24 +126,7 @@ export const questions = addMixins(
       dependsOn: "יחיד",
       type: "radio",
       field: "income",
-      questions: addIds([
-        {
-          value: 1,
-          text: "עד 9,089 ₪*"
-        },
-        {
-          value: 2,
-          text: "מעל 9,089 ₪ ועד ל- 13,634 ₪"
-        },
-        {
-          value: 3,
-          text: "מעל 13,634 ₪"
-        },
-        {
-          value: 4,
-          text: "לא כרגע"
-        }
-      ]),
+      questions: addIds(options.income1),
       value: "",
       textValue: "",
       required: true
@@ -296,24 +136,7 @@ export const questions = addMixins(
       dependsOn: "זוג",
       type: "radio",
       field: "income",
-      questions: addIds([
-        {
-          value: 1,
-          text: "עד 13,634 ₪"
-        },
-        {
-          value: 2,
-          text: "מעל 13,634 ₪ ועד ל- 20,451 ₪"
-        },
-        {
-          value: 3,
-          text: "מעל 20,451 ₪"
-        },
-        {
-          value: 4,
-          text: "לא כרגע"
-        }
-      ]),
+      questions: addIds(options.income2),
       value: "",
       textValue: "",
       required: true
@@ -352,38 +175,7 @@ export const questionsSubmit = addMixins(
       title: "אזור",
       type: "dropdown",
       field: "region",
-      questions: addIds([
-        {
-          text: "איזור המרכז – גוש דן"
-        },
-        {
-          text: "איזור ירושלים"
-        },
-        {
-          text: "איזור באר שבע והדרום"
-        },
-        {
-          text: "איזור חיפה והצפון"
-        },
-        {
-          text: "איזור השרון"
-        },
-        {
-          text: "איזור ראשון רחובות"
-        },
-        {
-          text: "אשדוד וצפון הנגב"
-        },
-        {
-          text: "אילת והסביבה"
-        },
-        {
-          text: "טבריה והגליל המיזרחי"
-        },
-        {
-          text: "עפולה והעמקים"
-        }
-      ]),
+      questions: addIds(options.regions),
       value: "",
       textValue: "",
       required: false
@@ -424,7 +216,7 @@ export const getAnswers = (questions = []) => {
   return questions
     .filter(
       q =>
-        ["input", "radio", "textarea"].includes(q.type) &&
+        ["input", "radio", "textarea", "dropdown"].includes(q.type) &&
         ((!!q.dependsOn &&
           questions.find(item => item.value === q.dependsOn) &&
           !!q.value) ||
