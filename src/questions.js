@@ -29,7 +29,7 @@ export const questions = addMixins(
       textValue: "",
       fieldType: "number",
       required: true,
-      classNames: ["Question-input-age"]
+      classNames: ["elementor-column elementor-col-40"]
     },
     {
       title: "מין",

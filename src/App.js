@@ -253,7 +253,8 @@ class Questions extends Component {
               "elementor-button",
               "elementor-size-sm",
               "elementor-column",
-              "Submit-button"
+              "Submit-button",
+              "elementor-col-100"
             )}
           >
             <span>
@@ -313,15 +314,30 @@ class QuestionsSubmit extends Component {
             invalid={showErrors && !q.isValid()}
           />
         ))}
-        <button
-          type="submit"
-          value={"שלח"}
-          className="elementor-button elementor-size-sm"
+        <div
+          className={cn(
+            "elementor-field-group",
+            "elementor-column",
+            "elementor-field-type-submit",
+            "elementor-col-100"
+          )}
         >
-          <span>
-            <span className="elementor-button-text">שליחה</span>
-          </span>
-        </button>
+          <button
+            type="submit"
+            value={"שלח"}
+            className={cn(
+              "elementor-button",
+              "elementor-size-sm",
+              "elementor-column",
+              "Submit-button",
+              "elementor-col-100"
+            )}
+          >
+            <span>
+              <span className="elementor-button-text">שלי1חה</span>
+            </span>
+          </button>
+        </div>
       </form>
     );
   }
