@@ -1,9 +1,10 @@
+//@flow
 import React, { Component } from "react";
 import cn from "classnames";
 
 import "./App.css";
 import {
-  isValid,
+  getInvalidationMessage,
   questions,
   questionsSubmit,
   getAnswers,
@@ -159,13 +160,18 @@ class ErrorBlock extends Component {
           <b className="Error-badge">{"הודגשו"}</b>
           {"למטה."}
         </p>
+        <p>{this.props.errorMessage}</p>
       </div>
     );
   }
 }
 
 class Questions extends Component {
-  state = { focusId: undefined, showErrors: false };
+  state = {
+    focusId: undefined,
+    showErrors: false,
+    errorMessage: ""
+  };
 
   onChange = () => {
     this.forceUpdate();
@@ -177,11 +183,12 @@ class Questions extends Component {
 
   onSubmit = event => {
     event.preventDefault();
-    const valid = isValid(questions);
-    this.setState({ showErrors: !valid });
+    const errorMessage = getInvalidationMessage(questions);
+    console.log("errorMessage", errorMessage);
+    this.setState({ showErrors: !!errorMessage, errorMessage });
 
-    !valid && window.scrollTo(0, 0);
-    if (valid) {
+    errorMessage && window.scrollTo(0, 0);
+    if (!errorMessage) {
       const results = getAnswersAndResult(questions);
       // console.log("Results: ", results);
       this.props.onSubmit && this.props.onSubmit(results);
@@ -190,7 +197,7 @@ class Questions extends Component {
   };
 
   render() {
-    const { focusId, showErrors } = this.state;
+    const { focusId, showErrors, errorMessage } = this.state;
     return (
       <form onSubmit={this.onSubmit} className="elementor-form">
         <div className="Questions-header-container">
@@ -200,7 +207,7 @@ class Questions extends Component {
             בדקו מה הסיכוי לזכאות לגמלת סיעוד מטעם הביטוח הלאומי
           </p>
         </div>
-        {showErrors && <ErrorBlock />}
+        {showErrors && <ErrorBlock errorMessage={errorMessage} />}
         <section className="Questions-header-description">
           <label>
             נא לשים לב, מחשבון הזכאות נועד לחשב את הסיכוי לקבלת גמלה מביטוח
@@ -225,7 +232,7 @@ class Questions extends Component {
                               onChange={this.onChange}
                               focused={focusId === q.id}
                               onFocus={this.onFocus}
-                              invalid={showErrors && !q.isValid()}
+                              invalid={showErrors && q.getInvalidationMessage()}
                             />
                           ))}
                         </div>
@@ -283,11 +290,12 @@ class QuestionsSubmit extends Component {
 
   onSubmit = event => {
     event.preventDefault();
-    const valid = isValid(questionsSubmit);
-    this.setState({ showErrors: !valid });
+    const errorMessage = getInvalidationMessage(questionsSubmit);
+    console.log("errorMessage", errorMessage);
+    this.setState({ showErrors: !!errorMessage, errorMessage });
 
-    !valid && window.scrollTo(0, 0);
-    if (valid) {
+    errorMessage && window.scrollTo(0, 0);
+    if (!errorMessage) {
       const results = getAnswers(questionsSubmit);
       // console.log("Results: ", results);
       this.props.onSubmit && this.props.onSubmit(results);
@@ -311,7 +319,7 @@ class QuestionsSubmit extends Component {
             onChange={this.onChange}
             focused={focusId === q.id}
             onFocus={this.onFocus}
-            invalid={showErrors && !q.isValid()}
+            invalid={showErrors && !q.getInvalidationMessage()}
           />
         ))}
         <div
@@ -334,7 +342,7 @@ class QuestionsSubmit extends Component {
             )}
           >
             <span>
-              <span className="elementor-button-text">שלי1חה</span>
+              <span className="elementor-button-text">שליחה</span>
             </span>
           </button>
         </div>

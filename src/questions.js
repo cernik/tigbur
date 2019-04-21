@@ -5,20 +5,33 @@ const addIds = (questions = []) => {
 };
 
 const addMixins = (_questions = []) => {
-  const isValid = function() {
-    const { value, required, dependsOn } = this;
+  const getInvalidationMessage = function() {
+    const { value, required, dependsOn, validateFns } = this;
     if (!!dependsOn && !questions.find(item => item.value === dependsOn)) {
-      return true;
+      return "";
     }
-    return !required || (required && !!value);
+    if (required && !value) {
+      return "Fill required fields";
+    }
+    if (value && validateFns && validateFns.length) {
+      return validateFns.reduce((acc, fn) => acc || fn(value), "");
+    }
+    return "";
   };
-  return _questions.map(q => ({ isValid, ...q }));
+  return _questions.map(q => ({ getInvalidationMessage, ...q }));
 };
 
-export const isValid = (questions = []) => {
-  return questions.every(q => q.isValid());
-};
+// export const isValid = (questions = []) => {
+//   return questions.every(q => q.isValid());
+// };
 
+export const getInvalidationMessage = (qs = []) => {
+  return qs.reduce((msg, q) => msg || q.getInvalidationMessage(), "");
+};
+const strings = {
+  ageMaxBoundError: "נא להזין גיל פחות מ-120",
+  ageMinBoundError: "נא להזין גיל יותר מ-20"
+};
 export const questions = addMixins(
   addIds([
     {
@@ -29,7 +42,11 @@ export const questions = addMixins(
       textValue: "",
       fieldType: "number",
       required: true,
-      classNames: ["elementor-column elementor-col-40"]
+      classNames: ["elementor-column elementor-col-40"],
+      validateFns: [
+        value => (+value >= 120 ? strings.ageMaxBoundError : ""),
+        value => (+value < 19 ? strings.ageMinBoundError : "")
+      ]
     },
     {
       title: "מין",
@@ -200,7 +217,7 @@ export const questionsSubmit = addMixins(
 );
 
 const getResult = sex => age => noProblem => incomeType => {
-  if ((+sex === 1 && age >= 67) || (+sex === 2 && age >= 62)) {
+  if ((+sex === 1 && age < 67) || (+sex === 2 && age < 62)) {
     return 3;
   }
   if (noProblem && +incomeType === 3) {
