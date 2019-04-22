@@ -218,13 +218,10 @@ export const questionsSubmit = addMixins(
 
 const getResult = sex => age => noProblem => incomeType => {
   if ((+sex === 1 && age < 67) || (+sex === 2 && age < 62)) {
-    return 3;
+    return 0;
   }
-  if (noProblem && +incomeType === 3) {
-    return 3;
-  }
-  if (+incomeType === 2) {
-    return 2;
+  if (noProblem || +incomeType === 3) {
+    return 0;
   }
   return 1;
 };
@@ -254,12 +251,13 @@ export function getAnswersAndResult(questions) {
   const ageAnswer = (answers.find(x => x.field === "age") || {}).value || 0;
   const sexAnswer = (answers.find(x => x.field === "sex") || {}).value || 0;
   const quizResult =
-    quizAnswers.reduce((acc, x) => acc + +x.value, 0) === quizAnswers.length;
+    quizAnswers.reduce((acc, x) => acc + +x.value, 0) >= quizAnswers.length - 1;
 
   const incomeAnswer =
     (answers.find(x => x.field === "income") || {}).value || 0;
 
   const result = getResult(sexAnswer)(ageAnswer)(quizResult)(incomeAnswer);
+
   return {
     answers,
     ageAnswer,
@@ -270,12 +268,16 @@ export function getAnswersAndResult(questions) {
 }
 
 export function getTextResult(type) {
-  switch (+type) {
-    case 1:
-      return 'תודה על מילוי הטופס. ע"פ הנתונים שהוזנו יתכן כי תקבלו גמלת סיעוד של ביטוח לאומי בגובה 9.75 שעות שבועיות. על מנת שנוכל לעזור לכם במיצוי זכויותיכם אנא צרו קשר עם תיגבור בטלפון 077-2370003 או השאירו פרטים';
-    case 2:
-      return 'תודה על מילוי הטופס. ע"פ הנתונים שהוזנו יתכן כי תקבלו גמלת סיעוד של ביטוח לאומי בגובה 5 שעות שבועיות. על מנת שנוכל לעזור לכם במיצוי זכויותיכם אנא צרו קשר עם תיגבור בטלפון 077-2370003 או השאירו פרטים';
-    default:
-      return 'תודה על מילוי הטופס. ע"פ הנתונים שהוזנו רמת ההכנסה גבוהה ואינה מזכה בגמלת סיעוד. על מנת לבדוק מהן זכויותיך אנא צרו קשר עם תיגבור בטלפון 077-2370003 או השאירו פרטים';
+  if (type) {
+    return ' תודה על מילוי הטופס. ע"פ הנתונים שהוזנו יתכן כי תקבלו גמלת סיעוד של ביטוח לאומי. על מנת שנוכל לעזור לכם במיצוי זכויותיכם אנא צרו קשר עם תיגבור בטלפון 077-2370003 או השאירו פרטים.';
   }
+  return 'תודה על מילוי הטופס. ע"פ הנתונים שהוזנו יתכן ולא תהיו זכאים לקבל גמלת סיעוד. על מנת לבדוק אפשרויות נוספות מהן זכויותיך אנא צרו קשר עם תיגבור בטלפון 077-2370003 או השאירו פרטים.';
+  // switch (+type) {
+  //   case 1:
+  //     return 'תודה על מילוי הטופס. ע"פ הנתונים שהוזנו יתכן כי תקבלו גמלת סיעוד של ביטוח לאומי בגובה 9.75 שעות שבועיות. על מנת שנוכל לעזור לכם במיצוי זכויותיכם אנא צרו קשר עם תיגבור בטלפון 077-2370003 או השאירו פרטים';
+  //   case 2:
+  //     return 'תודה על מילוי הטופס. ע"פ הנתונים שהוזנו יתכן כי תקבלו גמלת סיעוד של ביטוח לאומי בגובה 5 שעות שבועיות. על מנת שנוכל לעזור לכם במיצוי זכויותיכם אנא צרו קשר עם תיגבור בטלפון 077-2370003 או השאירו פרטים';
+  //   default:
+  //     return 'תודה על מילוי הטופס. ע"פ הנתונים שהוזנו רמת ההכנסה גבוהה ואינה מזכה בגמלת סיעוד. על מנת לבדוק מהן זכויותיך אנא צרו קשר עם תיגבור בטלפון 077-2370003 או השאירו פרטים';
+  // }
 }
